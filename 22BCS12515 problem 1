@@ -1,0 +1,73 @@
+import java.util.*;
+
+class Employee {
+    int id;
+    String name;
+    double salary;
+
+    Employee(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public String toString() {
+        return id + " - " + name + " - " + salary;
+    }
+}
+
+public class EmployeeManager {
+    static List<Employee> employees = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("1. Add 2. Update 3. Remove 4. Search 5. Display 6. Exit");
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 1 -> add();
+                case 2 -> update();
+                case 3 -> remove();
+                case 4 -> search();
+                case 5 -> display();
+                case 6 -> { return; }
+                default -> System.out.println("Invalid choice");
+            }
+        }
+    }
+
+    static void add() {
+        System.out.print("ID: "); int id = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Name: "); String name = sc.nextLine();
+        System.out.print("Salary: "); double salary = sc.nextDouble();
+        employees.add(new Employee(id, name, salary));
+    }
+
+    static void update() {
+        System.out.print("Enter ID to update: "); int id = sc.nextInt();
+        for (Employee e : employees) {
+            if (e.id == id) {
+                sc.nextLine();
+                System.out.print("New Name: "); e.name = sc.nextLine();
+                System.out.print("New Salary: "); e.salary = sc.nextDouble();
+                return;
+            }
+        }
+        System.out.println("Not found");
+    }
+
+    static void remove() {
+        System.out.print("Enter ID to remove: "); int id = sc.nextInt();
+        employees.removeIf(e -> e.id == id);
+    }
+
+    static void search() {
+        System.out.print("Enter ID to search: "); int id = sc.nextInt();
+        employees.stream().filter(e -> e.id == id).forEach(System.out::println);
+    }
+
+    static void display() {
+        employees.forEach(System.out::println);
+    }
+}
