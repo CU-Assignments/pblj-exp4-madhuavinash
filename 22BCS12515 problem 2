@@ -1,0 +1,71 @@
+import java.util.*;
+
+class Card {
+    private String symbol;
+    private String value;
+
+    public Card(String symbol, String value) {
+        this.symbol = symbol;
+        this.value = value;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    @Override
+    public String toString() {
+        return value + " of " + symbol;
+    }
+}
+
+public class CardCollection {
+    private static Map<String, List<Card>> cardMap = new HashMap<>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("1. Add Card  2. Display Cards by Symbol  3. Display All Cards  4. Exit");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            
+            switch (choice) {
+                case 1 -> addCard();
+                case 2 -> displayBySymbol();
+                case 3 -> displayAll();
+                case 4 -> { return; }
+                default -> System.out.println("Invalid choice");
+            }
+        }
+    }
+
+    private static void addCard() {
+        System.out.print("Enter symbol: ");
+        String symbol = scanner.nextLine();
+        System.out.print("Enter value: ");
+        String value = scanner.nextLine();
+        
+        cardMap.computeIfAbsent(symbol, k -> new ArrayList<>()).add(new Card(symbol, value));
+        System.out.println("Card added successfully!");
+    }
+
+    private static void displayBySymbol() {
+        System.out.print("Enter symbol: ");
+        String symbol = scanner.nextLine();
+        
+        List<Card> cards = cardMap.get(symbol);
+        if (cards != null && !cards.isEmpty()) {
+            cards.forEach(System.out::println);
+        } else {
+            System.out.println("No cards found for this symbol.");
+        }
+    }
+
+    private static void displayAll() {
+        if (cardMap.isEmpty()) {
+            System.out.println("No cards available.");
+        } else {
+            cardMap.values().forEach(cards -> cards.forEach(System.out::println));
+        }
+    }
+}
